@@ -5,7 +5,28 @@ const db = require('./models');
 const CommunityTest = require('./models/Community');
 const router = express.Router();
 const mongoo = require('mongoose');
-mongoo.connect('mongodb://localhost:27017/blog');
+
+const cors = require('cors')
+
+
+const connectDB = async ()=>{
+
+  const connectionStr = "mongodb+srv://wosenn5:Ethiopia2023@cluster0.tebvoup.mongodb.net/blog?retryWrites=true&w=majority";
+//mongoo.connect('mongodb://localhost:27017/blog');
+const conn = await mongoo.connect(connectionStr,{
+  useNewUrlParser:true,
+  useUnifiedTopology:true
+});
+
+if(conn){
+  console.log('database connected')
+}
+}
+
+
+connectDB();
+
+
 
 const app = express();
 const PORT = process.env.PORT || 9000;
@@ -16,6 +37,7 @@ app.use(express.json()); // allows the data in post/put to be parsed and underst
 app.use(logger('dev')); //setups logging in dev only
 app.use(express.static('public')); // basically looks in param before actual routes, will change later cuz we dont wanna use public
 app.use(cors());
+app.use(express.json())
 
 // get creates/listens routes to first parameter name and responses to the route
 app.get('/api/posts', async (req, res) => {
@@ -53,6 +75,23 @@ app.post('/api/communities', async (req, res) => {
   res.send(comm);
 });
 
+
+//
+app.get('/api/communities',async (req,res)=>{
+
+  const communities = await db.Community.find();
+  console.log(communities);
+  res.send(communities)
+})
+
+app.post('/api/communities', async (req,res)=>{
+
+  const result = await db.Community.create(req.body);
+  
+  res.send('community is created')
+
+})
 app.listen(PORT, () => {
   console.log('server now listening');
 });
+
