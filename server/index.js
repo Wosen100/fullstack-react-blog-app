@@ -6,7 +6,7 @@ const CommunityTest = require('./models/Community');
 const router = express.Router();
 const mongoo = require('mongoose');
 
-const cors = require('cors')
+//const cors = require('cors')
 
 
 const connectDB = async ()=>{
@@ -37,7 +37,7 @@ app.use(express.json()); // allows the data in post/put to be parsed and underst
 app.use(logger('dev')); //setups logging in dev only
 app.use(express.static('public')); // basically looks in param before actual routes, will change later cuz we dont wanna use public
 app.use(cors());
-app.use(express.json())
+//app.use(express.json())
 
 // get creates/listens routes to first parameter name and responses to the route
 app.get('/api/posts', async (req, res) => {
@@ -83,7 +83,6 @@ app.get('/api/communities',async (req,res)=>{
   console.log(communities);
   res.send(communities)
 })
-
 app.post('/api/communities', async (req,res)=>{
 
   const result = await db.Community.create(req.body);
