@@ -13,7 +13,37 @@ import { getCommunities } from '../store/communitySlice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import funcs from '../utils/Functions';
 
-const FormWrapper = styled.div``;
+const PageWrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  h2 {
+    text-align: center;
+  }
+`;
+
+const FormWrapper = styled.div`
+  width: 80vw;
+  height: 80vh;
+  margin: 0 auto;
+  padding: 2vw;
+  label {
+    display: flex;
+    flex-direction: column;
+    min-width: 800px;
+    #theBody {
+      height: 600px;
+    }
+  }
+  button {
+    width: 100%;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin: 5px auto;
+`;
 
 type CommunityProps = {
   uniqueName: string;
@@ -95,44 +125,57 @@ function SubmitPost() {
     setFormObj({ ...formObj, [id]: value });
   };
 
+  const handleTextAreaChange = (
+    e: ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    const { id, value } = e.target;
+    setFormObj({ ...formObj, [id]: value });
+  };
+
   return (
-    <FormWrapper>
-      <form onSubmit={handleFormSubmit}>
-        <label htmlFor="theTitle">
-          Title:
-          <input
-            id="theTitle"
-            type="string"
-            value={theTitle}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label htmlFor="theBody">
-          Body:
-          <input
-            id="theBody"
-            type="string"
-            value={theBody}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label htmlFor="theCommunity">
-          Community:
-          <select
-            id="theCommunity"
-            onChange={handleCommunity}
-            value={theCommunity}
-          >
-            {Object.values(comm).map((com: CommunityProps) => {
-              return (
-                <option key={nanoid()}>{com.displayName}</option>
-              );
-            })}
-          </select>
-        </label>
-        <button type="submit">Add Post</button>
-      </form>
-    </FormWrapper>
+    <PageWrapper>
+      <h2>Add Post</h2>
+      <FormWrapper>
+        <form onSubmit={handleFormSubmit}>
+          <label htmlFor="theTitle">
+            Title:
+            <input
+              id="theTitle"
+              placeholder="(Title)"
+              type="string"
+              value={theTitle}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label htmlFor="theBody">
+            Body:
+            <textarea
+              id="theBody"
+              placeholder="(Description)"
+              value={theBody}
+              onChange={handleTextAreaChange}
+            />
+          </label>
+          <label htmlFor="theCommunity">
+            Community:
+            <select
+              id="theCommunity"
+              onChange={handleCommunity}
+              value={theCommunity}
+            >
+              {Object.values(comm).map((com: CommunityProps) => {
+                return (
+                  <option key={nanoid()}>{com.displayName}</option>
+                );
+              })}
+            </select>
+          </label>
+          <ButtonWrapper>
+            <button type="submit">Add Post</button>
+          </ButtonWrapper>
+        </form>
+      </FormWrapper>
+    </PageWrapper>
   );
 }
 
