@@ -4,7 +4,9 @@ const cors = require('cors');
 const db = require('./models');
 const router = express.Router();
 const mongoo = require('mongoose');
-mongoo.connect('mongodb://localhost:27017/blog');
+
+mongoo.connect(process.env.CONNSTRING)
+//mongoo.connect('mongodb://localhost:27017/blog');
 
 const app = express();
 const PORT = process.env.PORT || 9000;
